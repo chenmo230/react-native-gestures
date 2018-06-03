@@ -1,28 +1,30 @@
 import events from './mixins/events'
 import draggableMixin from './mixins/draggable'
 import React, {
-  PropTypes
+  Component
 } from 'react'
 import {
   View,
   Image
 } from 'react-native'
 
-export default React.createClass({
-  mixins: [events(['onLayout']), draggableMixin()],
+import PropTypes from 'prop-types'; 
 
-  propTypes: {
-    gestures: PropTypes.array.isRequired,
-    onError: PropTypes.func.isRequired,
-    toStyle: PropTypes.func.isRequired,
-    style: PropTypes.any,
-    children: PropTypes.array,
-    type: PropTypes.oneOf([
-      'View',
-      'Image'
-    ]),
-    source: PropTypes.any
-  },
+export default class GestureView extends Component{
+  static mixins = [events(['onLayout']), draggableMixin()]
+
+  static propTypes = {
+      gestures: PropTypes.array.isRequired,
+      onError: PropTypes.func.isRequired,
+      toStyle: PropTypes.func.isRequired,
+      style: PropTypes.any,
+      children: PropTypes.array,
+      type: PropTypes.oneOf([
+        'View',
+        'Image'
+      ]),
+      source: PropTypes.any
+  }
 
   componentDidMount () {
     this.layoutStream.subscribe(
@@ -31,7 +33,7 @@ export default React.createClass({
       }),
       (err) => this.props.onError(err)
     )
-  },
+  }
 
   render () {
     let props = {
@@ -56,4 +58,4 @@ export default React.createClass({
       </View>
     )
   }
-})
+}
